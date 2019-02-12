@@ -6,3 +6,6 @@ class Config:
         'telegram_id' : 'Name',
         'telegram_id2': 'Name2'
     }
+    ALLOW_ID_CREATE_OTP = {
+        'telegram_id' : 'Name'
+    }
