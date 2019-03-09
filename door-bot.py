@@ -20,23 +20,10 @@ OTP_IN_MEM = {}
 # Check if user id is in the list
 # -------------------------------
 def check_user(uid):
-
-    allow = False
-
-    for user_id in env.ALLOW_ID_LIST:
-        if user_id == str(uid):
-            allow = True
-            break
-
-    return allow
+    return str(uid) in env.ALLOW_ID_LIST
 
 def check_otp_user(uid):
-     allow = False
-     for user_id in env.ALLOW_ID_CREATE_OTP:
-         if user_id == str(uid):
-             allow = True
-             break
-     return allow
+     return str(uid) in env.ALLOW_ID_CREATE_OTP
 
 # -------------------------------
 # Get LAN IP
@@ -52,6 +39,9 @@ def bash_cmd(bashCommand):
     output, error = process.communicate()
     return output
 
+# -------------------------------
+# Send logs to admin
+# -------------------------------
 def log_to_admin(message):
     print message
     bot.send_message(env.ADMIN_ID, message)
