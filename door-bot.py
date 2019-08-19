@@ -62,6 +62,16 @@ def create_new_otp(user_name):
 # Init GPIO
 bash_cmd('bash ' + os.getcwd()  +'/gpio-init.sh')
 
+# Init msg to admin
+def init_msg():
+    uptime = bash_cmd('uptime')
+    date = bash_cmd('date')
+    temp = bash_cmd('vcgencmd measure_temp')
+    msg = "Door Bot Initialized\nUptime: {}Date: {}{}".format(uptime, date, temp)
+    log_to_admin(msg)
+
+init_msg()
+
 # Handle '/start' and '/help'
 @bot.message_handler(commands=['help', 'start'])
 def send_welcome(message):
@@ -97,7 +107,8 @@ def send_ip(message):
 @bot.message_handler(commands=['myid'])
 def send_my_id(message):
     bot.reply_to(message, 'My telegram user id: ' + str(message.from_user.id))
-    log_to_admin('Someone send ID query: ' + str(message.from_user.id))
+    uid = message.from_user.username
+    log_to_admin('@{} send ID query: '.format(uid) + str(message.from_user.id))
 
 @bot.message_handler(commands=['open'])
 def open_door(message):
@@ -118,6 +129,11 @@ def check_priv(message):
 def get_tmp_and_hum(message):
     output = bash_cmd('/home/pi/Adafruit_Python_DHT/examples/AdafruitDHT.py 11 3')
     bot.reply_to(message, output);
+
+@bot.message_handler(commands=['init'])
+def send_init_msg(message):
+    init_msg()
+    bot.reply_to(message, "Sent")
 
 @bot.message_handler(commands=['otp'])
 def gen_otp_or_open_with(message):
@@ -168,4 +184,3 @@ def gen_otp_or_open_with(message):
 
 # Loop
 bot.polling()
-
