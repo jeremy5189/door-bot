@@ -85,7 +85,7 @@ init_msg()
 @bot.message_handler(commands=['help', 'start'])
 def send_welcome(message):
     markup = types.ReplyKeyboardMarkup(one_time_keyboard=True)
-    markup.add('/otp', '/wait3', '/song', '/myid', '/check', '/env', '/open')
+    markup.add('/otp', '/wait3', '/wait', '/song', '/myid', '/check', '/open')
     bot.reply_to(message, "Hello! This is Jeremy Home Door Bot, open the door with /open or /otp [code]", reply_markup=markup)
 
 @bot.message_handler(commands=['song'])
@@ -97,6 +97,24 @@ def song_open_door(message):
     else:
         log_to_admin('DENIED: ' + str(message.from_user.id))
         bot.reply_to(message, 'User ID not allowd')
+
+@bot.message_handler(commands=['wait'])
+def wait_n_open_door(message):
+    args = message.text.split(' ')
+    if len(args) < 2:
+        bot.reply_to(message, 'Usage: /wait [seconds] (max 300)')
+    elif not args[1].isdigit():
+        bot.reply_to(message, 'Usage: /wait [seconds] (max 300)')
+    elif int(args[1]) > 300:
+        bot.reply_to(message, 'Usage: /wait [seconds] (max 300)')
+    else:
+        if check_user(message.from_user.id):
+            bot.reply_to(message, 'Wait {} sec to open'.format(args[1]))
+            time.sleep(int(args[1]))
+            open_door_wrapper(str(message.from_user.id), 'wait {}'.format(args[1]))
+            bot.reply_to(message, 'Door opened')
+        else:
+            bot.reply_to(message, 'User ID not allowd')
 
 @bot.message_handler(commands=['wait3'])
 def wait_open_door(message):
