@@ -9,3 +9,6 @@ class Config:
     ALLOW_ID_CREATE_OTP = {
         'telegram_id' : 'Name'
     }
+    NOTIFY_LIST = {
+        'telegram_id' : ['telegram_id']
+    }

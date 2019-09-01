@@ -46,13 +46,22 @@ def log_to_admin(message):
     print message
     bot.send_message(env.ADMIN_ID, message)
 
+
 # -------------------------------
 # Open door
 # -------------------------------
 def open_door_wrapper(user_id, via):
     bash_cmd('bash ' + os.getcwd()  + '/gpio-toggle.sh')
+
     if via != 'otp':
-        log_to_admin('DOOR OPENED BY: ' + env.ALLOW_ID_LIST[user_id] + ' via ' + via)
+        msg = 'DOOR OPENED BY: ' + env.ALLOW_ID_LIST[user_id] + ' via ' + via
+        log_to_admin(msg)
+
+    if user_id in env.NOTIFY_LIST:
+        for receiver in env.NOTIFY_LIST[user_id]:
+            print 'Sending friendly notify to {} because of {}'.format(env.ALLOW_ID_LIST[receiver], env.ALLOW_ID_LIST[user_id])
+            bot.send_message(receiver, "<Friendly Notification> {}".format(msg))    
+
 
 def create_new_otp(user_name):
     new_otp = random.randint(100000, 999999)
