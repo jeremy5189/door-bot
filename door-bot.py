@@ -95,7 +95,7 @@ def song_open_door(message):
         log_to_admin('DOOR OPENED BY: ' + env.ALLOW_ID_LIST[str(message.from_user.id)] + ' via song')
         bash_cmd('bash ' + os.getcwd() + '/gpio-song.sh')
     else:
-        log_to_admin('DENIED: ' + str(message.from_user.id))
+        log_to_admin('DENIED: {} (@{})'.format(str(message.from_user.id), message.from_user.username))
         bot.reply_to(message, 'User ID not allowd')
 
 @bot.message_handler(commands=['wait'])
@@ -114,6 +114,7 @@ def wait_n_open_door(message):
             open_door_wrapper(str(message.from_user.id), 'wait {}'.format(args[1]))
             bot.reply_to(message, 'Door opened')
         else:
+            log_to_admin('DENIED: {} (@{})'.format(str(message.from_user.id), message.from_user.username))
             bot.reply_to(message, 'User ID not allowd')
 
 @bot.message_handler(commands=['wait3'])
@@ -124,6 +125,7 @@ def wait_open_door(message):
         open_door_wrapper(str(message.from_user.id), 'wait3')
         bot.reply_to(message, 'Door opened')
     else:
+        log_to_admin('DENIED: {} (@{})'.format(str(message.from_user.id), message.from_user.username))
         bot.reply_to(message, 'User ID not allowd')
 
 @bot.message_handler(commands=['ip'])
@@ -143,13 +145,16 @@ def open_door(message):
         bot.reply_to(message, 'Door opened')
         open_door_wrapper(str(message.from_user.id), 'open')
     else:
+        log_to_admin('DENIED: {} (@{})'.format(str(message.from_user.id), message.from_user.username))
         bot.reply_to(message, 'User ID not allowd')
 
 @bot.message_handler(commands=['check'])
 def check_priv(message):
     if check_user(message.from_user.id):
+        log_to_admin('Check granted: {} (@{})'.format(str(message.from_user.id), message.from_user.username))
         bot.reply_to(message, 'Access Granted')
     else:
+        log_to_admin('Check denied: {} (@{})'.format(str(message.from_user.id), message.from_user.username))
         bot.reply_to(message, 'Access Denied')
 
 @bot.message_handler(commands=['env'])
