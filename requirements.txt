@@ -6,7 +6,7 @@ colorama==0.3.2
 gyp==0.1
 html5lib==0.999
 ndg-httpsclient==0.3.2
-pyOpenSSL==0.13.1
+pyOpenSSL==17.5.0
 pyTelegramBotAPI==2.3.1
 pyasn1==0.1.7
 pycups==1.9.63
