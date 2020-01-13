@@ -11,7 +11,7 @@ pyTelegramBotAPI==2.3.1
 pyasn1==0.1.7
 pycups==1.9.63
 python-apt==0.9.3.12
-requests==2.4.3
+requests==2.20.0
 six==1.8.0
 urllib3==1.9.1
 wheel==0.24.0
